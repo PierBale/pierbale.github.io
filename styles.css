@@ -1,9 +1,13 @@
-/* Layout generale */
+/* ========================================
+   Layout generale
+======================================== */
 html, body {
     height: 100%;
     margin: 0;
     display: flex;
     flex-direction: column;
+    font-family: Arial, sans-serif; /* Font leggibile */
+    background-color: #f9fbfd; /* Colore di sfondo più accogliente */
 }
 
 /* Contenitore principale */
@@ -11,204 +15,217 @@ html, body {
     flex: 1; /* Occupa lo spazio rimanente */
 }
 
-/* Colori del body */
-body {
-    background-color: #f8f9fa;
+/* ========================================
+   Navbar
+======================================== */
+.navbar {
+    background-color: #2c3e50; /* Blu scuro accattivante */
 }
 
-/* Navbar */
-.navbar {
-    background-color: #527ba3;
-}
 .navbar-brand, .nav-link {
     color: white !important;
-}
-.navbar-brand:hover, .nav-link:hover {
-    color: #dce7f3 !important;
+    font-weight: 600;
 }
 
-/* Footer */
+.navbar-brand:hover, .nav-link:hover {
+    color: #95a5a6 !important; /* Grigio chiaro per hover */
+    text-decoration: underline;
+}
+
+/* ========================================
+   Footer
+======================================== */
 footer {
-    background-color: #527ba3;
+    background-color: #2c3e50;
     color: white;
     text-align: center;
     padding: 10px 0;
-    margin-top: auto;
+    margin-top: 20px;
 }
+
 footer a {
-    color: #dce7f3;
+    color: #ecf0f1; /* Colore chiaro per link nel footer */
     text-decoration: none;
+    font-weight: bold;
 }
+
 footer a:hover {
+    color: #bdc3c7;
     text-decoration: underline;
 }
 
 footer p {
-    margin: 0; /* Rimuove il margine predefinito */
-    line-height: 1.5; /* Riduce lo spazio tra le righe */
+    margin: 0;
+    line-height: 1.5;
 }
 
-/* Timeline container */
+/* ========================================
+   Timeline
+======================================== */
 .timeline {
     position: relative;
     padding-left: 30px;
-    border-left: 2px solid #527ba3;
+    border-left: 3px solid #2980b9; /* Blu accattivante */
     margin-top: 20px;
 }
 
-/* Timeline item */
 .timeline-item {
     position: relative;
     margin-bottom: 20px;
 }
 
-/* Timeline date */
 .timeline-date {
     font-weight: bold;
-    color: #527ba3;
+    color: #2980b9;
     margin-bottom: 5px;
+    font-size: 0.9rem;
 }
 
-/* Timeline content */
 .timeline-content h5 {
     font-size: 1.1rem;
-    margin: 0;
+    color: #34495e; /* Colore accattivante per i titoli */
 }
 
 .timeline-content p {
     margin: 5px 0 0;
+    color: #2c3e50;
 }
 
-/* Link styling */
 .timeline-content a {
-    color: #527ba3;
+    color: #2980b9;
     text-decoration: none;
 }
 
 .timeline-content a:hover {
+    color: #1abc9c; /* Verde per hover */
     text-decoration: underline;
 }
 
-/* Personalizzazione delle card */
+/* ========================================
+   Cards
+======================================== */
 .card {
     border: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .card:hover {
     transform: scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Margine aggiuntivo tra le righe */
-.row.g-4 {
-    margin-bottom: 20px;
+.card-title {
+    color: #2980b9;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 
-/* Link */
+.card-text {
+    color: #34495e;
+}
+
 .card-text a {
-    color: #527ba3;
+    color: #2980b9;
     text-decoration: none;
 }
 
 .card-text a:hover {
+    color: #1abc9c;
     text-decoration: underline;
-    color: #345d8c;
 }
 
-/* Stile del titolo del progetto */
-h2 {
-    font-size: 1.5rem;
-    color: #527ba3;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 5px;
+/* ========================================
+   Immagini
+======================================== */
+/* Stile per immagini rettangolari */
+.img-rectangle {
+    border-radius: 10px;
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    border: 1px solid #ddd;
 }
 
-/* Link personalizzati */
+/* Stile per immagini fluide */
+.img-fluid {
+    border-radius: 5px;
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    border: 1px solid #ddd;
+}
+
+/* Immagini delle cards */
+.hobby-img {
+    border-radius: 0px;
+    width: 100%; /* Adatta l'immagine alla larghezza del contenitore */
+    border-right: none; /* Rimuovi il bordo */
+    max-width: 400px;
+    height: 150; /* Altezza uniforme per tutte le immagini */
+    object-fit: cover; /* Mantiene le proporzioni e adatta l'immagine */
+    border-right: 1px solid #ddd; /* Bordo opzionale per separare immagine e testo */
+}
+
+/* ========================================
+   Pulsanti e link
+======================================== */
 a {
-    color: #527ba3;
+    color: #2980b9;
     text-decoration: none;
 }
 
 a:hover {
+    color: #1abc9c;
     text-decoration: underline;
-    color: #345d8c;
 }
 
+.btn-outline-primary:hover {
+    background-color: #2980b9;
+    color: white;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #7f8c8d;
+    color: white;
+}
+
+.btn-outline-info:hover {
+    background-color: #1abc9c;
+    color: white;
+}
+
+/* ========================================
+   Margini e spaziature
+======================================== */
+.row.g-4 {
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    color: #2980b9;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+/* ========================================
+   Link GitHub
+======================================== */
 .github-link {
-    margin-bottom: 40px;
-    padding-top: 20px;
+    position: relative;
+    top: 50vh; /* Sposta verso il basso metà dell'altezza del viewport */
+    margin-bottom: 20px;
     border-top: 1px solid #ddd;
 }
 
 .github-link p a {
-    color: #527ba3;
+    color: #2980b9;
     text-decoration: none;
     font-weight: bold;
 }
 
 .github-link p a:hover {
     text-decoration: underline;
-    color: #345d8c;
-}
-
-/* Spaziatura uniforme tra i pulsanti */
-.social-links a {
-    width: 100%; /* Rende i pulsanti più larghi */
-    max-width: 200px; /* Limita la larghezza massima */
-    margin: auto; /* Centra i pulsanti */
-}
-
-/* Hover per i pulsanti */
-.btn-outline-primary:hover {
-    background-color: #527ba3;
-    color: white;
-}
-
-.btn-outline-secondary:hover {
-    background-color: #6c757d;
-    color: white;
-}
-
-.btn-outline-info:hover {
-    background-color: #17a2b8;
-    color: white;
-}
-
-/* Stile dell'immagine rettangolare */
-.img-rectangle {
-    border-radius: 10px; /* Bordi completamente squadrati */
-    width: 100%; /* Dimensione adattabile alla larghezza del contenitore */
-    max-width: 250px; /* Limita la larghezza massima */
-    height: auto; /* Mantiene le proporzioni dell'immagine */
-    border: 1px solid #ddd; /* Bordo opzionale */
-}
-
-.img-fluid {
-    border-radius: 3px; /* Bordi completamente squadrati */
-    width: 100%; /* Dimensione adattabile alla larghezza del contenitore */
-    max-width: 150px; /* Limita la larghezza massima */
-    height: auto; /* Mantiene le proporzioni dell'immagine */
-    border: 1px solid #ddd; /* Bordo opzionale */
-}
-
-/* Immagini delle cards */
-.hobby-img {
-    width: 100%; /* Adatta l'immagine alla larghezza del contenitore */
-    height: 300px; /* Altezza uniforme per tutte le immagini */
-    object-fit: cover; /* Mantiene le proporzioni e adatta l'immagine */
-    border-right: 1px solid #ddd; /* Bordo opzionale per separare immagine e testo */
-}
-
-/* Stile delle cards */
-.card {
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombreggiatura leggera */
-    overflow: hidden; /* Evita immagini che escono dai limiti */
-}
-
-.card-title {
-    color: #527ba3;
-    font-weight: bold;
-    margin-bottom: 10px;
+    color: #1abc9c;
 }
