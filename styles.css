@@ -15,6 +15,14 @@ html, body {
     flex: 1; /* Occupa lo spazio rimanente */
 }
 
+body {
+    overflow-y: auto; /* Abilita lo scroll */
+}
+
+body::-webkit-scrollbar {
+    display: none; /* Nasconde la scrollbar su Safari */
+}
+
 /* ========================================
    Navbar
 ======================================== */
@@ -65,7 +73,7 @@ footer p {
 .timeline {
     position: relative;
     padding-left: 30px;
-    border-left: 3px solid #2980b9; /* Blu accattivante */
+    border-left: 3px solid #2980b9; /* Linea blu */
     margin-top: 20px;
 }
 
@@ -101,6 +109,15 @@ footer p {
     text-decoration: underline;
 }
 
+/* Freccia verso l'alto */
+.timeline-arrow {
+    position: absolute;
+    top: -30px; /* Posiziona sopra la timeline */
+    left: 27px; /* Allinea con il bordo della timeline */
+    font-size: 20px;
+    color: #2980b9;
+    cursor: pointer;
+}
 /* ========================================
    Cards
 ======================================== */
@@ -208,6 +225,7 @@ h2 {
     border-bottom: 2px solid #ddd;
     padding-bottom: 5px;
 }
+
 
 /* ========================================
    Link GitHub
