@@ -1703,3 +1703,74 @@ a:hover {
     padding: 24px 18px;
   }
 }
+
+/* V10: mobile arcade controls and preview polish */
+.mobile-game-note {
+  display: none;
+  margin: 14px auto 0;
+  color: #6b778c;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.arcade-page,
+.game-stage,
+.arcade-controls,
+.arcade-controls button {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@media (max-width: 767.98px), (hover: none) and (pointer: coarse) {
+  .arcade-page {
+    overscroll-behavior-y: contain;
+  }
+
+  .arcade-main {
+    width: min(100% - 16px, 1220px);
+    padding-top: 18px;
+  }
+
+  .arcade-header {
+    margin-bottom: 26px;
+  }
+
+  .arcade-header h1 {
+    font-size: clamp(2.35rem, 12vw, 3.5rem);
+  }
+
+  .arcade-header > p:last-child {
+    margin-top: 14px;
+    font-size: 0.98rem;
+  }
+
+  .arcade-card {
+    padding: 12px;
+  }
+
+  .arcade-toolbar h2 {
+    font-size: 1.65rem;
+  }
+
+  .arcade-overline {
+    font-size: 0.65rem;
+  }
+
+  .arcade-controls {
+    grid-template-columns: repeat(3, minmax(72px, 84px));
+    gap: 12px;
+  }
+
+  .arcade-controls button {
+    width: 100%;
+    height: 62px;
+    font-size: 1.18rem;
+  }
+
+  .mobile-game-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+}

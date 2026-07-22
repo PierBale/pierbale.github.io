@@ -12,6 +12,7 @@
   const highScoreValue = document.getElementById("highScoreValue");
   const livesValue = document.getElementById("livesValue");
   const levelValue = document.getElementById("levelValue");
+  const coarsePointer = window.matchMedia("(hover: none) and (pointer: coarse)");
 
   const W = canvas.width;
   const H = canvas.height;
@@ -35,6 +36,9 @@
   let formationSpeed = 34;
   let enemyShootTimer = 0;
   let levelClearTimer = 0;
+  let canvasPointerId = null;
+  let canvasPointerStartX = 0;
+  let canvasPointerMoved = false;
 
   const palette = {
     white: "#f8fbff",
@@ -51,6 +55,25 @@
     const available = canvas.parentElement.clientWidth;
     canvas.style.width = `${available}px`;
     canvas.style.height = `${available / ratio}px`;
+  }
+
+  function updateControlInstructions() {
+    if (!running) {
+      overlayCopy.textContent = coarsePointer.matches
+        ? "Drag across the game area to move and tap it to fire, or use the controls below."
+        : "Move with ← → or A D. Fire with Space. Press P to pause.";
+    }
+  }
+
+  function gameXFromPointer(event) {
+    const rect = canvas.getBoundingClientRect();
+    return ((event.clientX - rect.left) / rect.width) * W;
+  }
+
+  function movePlayerToPointer(event) {
+    if (!running || paused || !player) return;
+    const targetX = gameXFromPointer(event) - player.w / 2;
+    player.x = Math.max(18, Math.min(W - player.w - 18, targetX));
   }
 
   function makeStars() {
@@ -448,13 +471,47 @@
 
   document.querySelectorAll("[data-control]").forEach(button => {
     const control = button.dataset.control;
-    const press = event => { event.preventDefault(); keys[control] = true; };
-    const release = event => { event.preventDefault(); keys[control] = false; };
+    const press = event => {
+      event.preventDefault();
+      if (button.setPointerCapture) button.setPointerCapture(event.pointerId);
+      keys[control] = true;
+    };
+    const release = event => {
+      event.preventDefault();
+      keys[control] = false;
+      if (button.hasPointerCapture?.(event.pointerId)) button.releasePointerCapture(event.pointerId);
+    };
     button.addEventListener("pointerdown", press);
     button.addEventListener("pointerup", release);
     button.addEventListener("pointercancel", release);
-    button.addEventListener("pointerleave", release);
   });
+
+  canvas.addEventListener("pointerdown", event => {
+    if (!coarsePointer.matches || !running || paused) return;
+    event.preventDefault();
+    canvasPointerId = event.pointerId;
+    canvasPointerStartX = event.clientX;
+    canvasPointerMoved = false;
+    if (canvas.setPointerCapture) canvas.setPointerCapture(event.pointerId);
+    movePlayerToPointer(event);
+  });
+
+  canvas.addEventListener("pointermove", event => {
+    if (event.pointerId !== canvasPointerId || !running || paused) return;
+    event.preventDefault();
+    if (Math.abs(event.clientX - canvasPointerStartX) > 8) canvasPointerMoved = true;
+    movePlayerToPointer(event);
+  });
+
+  const finishCanvasPointer = event => {
+    if (event.pointerId !== canvasPointerId) return;
+    event.preventDefault();
+    if (!canvasPointerMoved && running && !paused) shoot();
+    if (canvas.hasPointerCapture?.(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
+    canvasPointerId = null;
+  };
+  canvas.addEventListener("pointerup", finishCanvasPointer);
+  canvas.addEventListener("pointercancel", finishCanvasPointer);
 
   startButton.addEventListener("click", () => {
     if (running && paused) {
@@ -469,10 +526,12 @@
   });
   pauseButton.addEventListener("click", togglePause);
 
+  coarsePointer.addEventListener?.("change", updateControlInstructions);
   makeStars();
   resetPlayer();
   createInvaders();
   highScoreValue.textContent = highScore;
   resizeCanvasDisplay();
+  updateControlInstructions();
   draw();
 })();
