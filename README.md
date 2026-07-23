@@ -2,20 +2,46 @@
 
 Static portfolio hosted with GitHub Pages.
 
-## Structure
+## Project structure
 
-- `index.html` — homepage
-- `publications.html` — selected publications and posters
-- `projects.html` — research projects
-- `news.html` — current-year highlights
-- `news/` — archive by year
-- `arcade.html` — browser game
-- `hobbies.html` — personal interests
-- `assets/css/` — stylesheets
-- `assets/js/` — JavaScript
-- `assets/images/` — profile, hobby and poster images
-- `assets/docs/` — CV and poster PDFs
+```text
+.
+├── index.html                 # Homepage
+├── publications/
+│   └── index.html             # Selected publications and posters
+├── projects/
+│   └── index.html             # Research projects
+├── news/
+│   ├── index.html             # 2026 news
+│   ├── 2025/index.html
+│   ├── 2024/index.html
+│   ├── 2023/index.html
+│   └── 2022/index.html
+├── elsewhere/
+│   └── index.html             # Browser game
+├── hobbies/
+│   └── index.html             # Personal interests
+├── assets/
+│   ├── css/styles.css
+│   ├── js/arcade.js
+│   ├── icons/
+│   ├── images/
+│   └── docs/
+├── .nojekyll
+└── .gitignore
+```
+
+Every public page uses a directory-based route, so URLs do not expose `.html`:
+
+- `/publications/`
+- `/projects/`
+- `/news/`
+- `/news/2025/`
+- `/elsewhere/`
+- `/hobbies/`
+
+Only `index.html` files remain because GitHub Pages uses them as the default document for each route.
 
 ## Publishing
 
-GitHub Pages should deploy from the `main` branch and `/(root)` directory.
+Deploy from the `main` branch and the repository root (`/(root)`).
