@@ -8,6 +8,7 @@
   const overlayCopy = document.getElementById("overlayCopy");
   const startButton = document.getElementById("startButton");
   const pauseButton = document.getElementById("pauseButton");
+  const mobileStartButton = document.getElementById("mobileStartButton");
   const scoreValue = document.getElementById("scoreValue");
   const highScoreValue = document.getElementById("highScoreValue");
   const livesValue = document.getElementById("livesValue");
@@ -25,7 +26,23 @@
   let score = 0;
   let lives = 3;
   let level = 1;
-  let highScore = Number(localStorage.getItem("pbInvadersHighScore") || 0);
+  function loadHighScore() {
+    try {
+      return Number(window.localStorage.getItem("pbInvadersHighScore") || 0);
+    } catch (error) {
+      return 0;
+    }
+  }
+
+  function saveHighScore(value) {
+    try {
+      window.localStorage.setItem("pbInvadersHighScore", String(value));
+    } catch (error) {
+      // Some in-app browsers disable storage; the game still works without persistence.
+    }
+  }
+
+  let highScore = loadHighScore();
   let player;
   let bullets = [];
   let enemyBullets = [];
@@ -146,6 +163,7 @@
     }
     paused = false;
     overlay.classList.add("is-hidden");
+    if (mobileStartButton) mobileStartButton.hidden = true;
     pauseButton.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
     lastTime = performance.now();
     cancelAnimationFrame(animationId);
@@ -156,6 +174,10 @@
     overlayTitle.textContent = title;
     overlayCopy.textContent = copy;
     startButton.innerHTML = `${buttonLabel} <i class="fa-solid fa-play"></i>`;
+    if (mobileStartButton) {
+      mobileStartButton.innerHTML = `${buttonLabel} <i class="fa-solid fa-play"></i>`;
+      mobileStartButton.hidden = false;
+    }
     overlay.classList.remove("is-hidden");
   }
 
@@ -238,7 +260,7 @@
     cancelAnimationFrame(animationId);
     if (score > highScore) {
       highScore = score;
-      localStorage.setItem("pbInvadersHighScore", String(highScore));
+      saveHighScore(highScore);
     }
     updateHud();
     showOverlay("Game over", `Final score: ${score}. The fleet slipped through this time.`, "Play again");
@@ -473,26 +495,34 @@
     const control = button.dataset.control;
     const press = event => {
       event.preventDefault();
-      if (button.setPointerCapture) button.setPointerCapture(event.pointerId);
+      try { button.setPointerCapture?.(event.pointerId); } catch (error) {}
       keys[control] = true;
+      if (control === "fire" && running && !paused) shoot();
     };
     const release = event => {
       event.preventDefault();
       keys[control] = false;
-      if (button.hasPointerCapture?.(event.pointerId)) button.releasePointerCapture(event.pointerId);
+      try { if (button.hasPointerCapture?.(event.pointerId)) button.releasePointerCapture(event.pointerId); } catch (error) {}
     };
     button.addEventListener("pointerdown", press);
     button.addEventListener("pointerup", release);
     button.addEventListener("pointercancel", release);
+    button.addEventListener("click", event => {
+      event.preventDefault();
+      if (!running || paused || !player) return;
+      if (control === "left") player.x = Math.max(18, player.x - 70);
+      if (control === "right") player.x = Math.min(W - player.w - 18, player.x + 70);
+      if (control === "fire") shoot();
+    });
   });
 
   canvas.addEventListener("pointerdown", event => {
-    if (!coarsePointer.matches || !running || paused) return;
+    if (!running || paused) return;
     event.preventDefault();
     canvasPointerId = event.pointerId;
     canvasPointerStartX = event.clientX;
     canvasPointerMoved = false;
-    if (canvas.setPointerCapture) canvas.setPointerCapture(event.pointerId);
+    try { canvas.setPointerCapture?.(event.pointerId); } catch (error) {}
     movePlayerToPointer(event);
   });
 
@@ -507,23 +537,27 @@
     if (event.pointerId !== canvasPointerId) return;
     event.preventDefault();
     if (!canvasPointerMoved && running && !paused) shoot();
-    if (canvas.hasPointerCapture?.(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
+    try { if (canvas.hasPointerCapture?.(event.pointerId)) canvas.releasePointerCapture(event.pointerId); } catch (error) {}
     canvasPointerId = null;
   };
   canvas.addEventListener("pointerup", finishCanvasPointer);
   canvas.addEventListener("pointercancel", finishCanvasPointer);
 
-  startButton.addEventListener("click", () => {
+  function handleStartOrContinue() {
     if (running && paused) {
       paused = false;
       overlay.classList.add("is-hidden");
+      if (mobileStartButton) mobileStartButton.hidden = true;
       pauseButton.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
       lastTime = performance.now();
       animationId = requestAnimationFrame(loop);
     } else {
       startGame();
     }
-  });
+  }
+
+  startButton.addEventListener("click", handleStartOrContinue);
+  mobileStartButton?.addEventListener("click", handleStartOrContinue);
   pauseButton.addEventListener("click", togglePause);
 
   coarsePointer.addEventListener?.("change", updateControlInstructions);
